@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{ name }}'s ProgrammingLearning</title>
+    <title>{{ user.name }}'s ProgrammingLearning</title>
     <link rel = "stylesheet" , href = "{{url_for('static' , filename = 'style.css')}}" , type = "text/css"}">
 </head>
 <body>
     <h2>
-    {{ name }}'s Blog
+    {{ user.name }}'s Blog
     <img alt = "Avatar" class = "avatar" src = "{{url_for('static' , filename = 'images/avatar.png')}}"
     </h2>
     {# 使用 length 过滤器获取 movies 变量的长度 #}

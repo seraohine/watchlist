@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ user.name }}'s Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+</head>
+<body>
+    <h2>
+        <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
+        {{ user.name }}'s Blog
+    </h2>
+        {% extends 'base.html' %}
+        {% block content %}
+    <ul class="project-list">
+        <li>
+            Page Not Found - 404
+            <span class="float-right">
+                <a href="{{ url_for('index') }}">Go Back</a>
+            </span>
+        </li>
+    </ul>
+        {% endblock %}
+    <footer>
+        <small>&copy; 2023 <a href="http://helloflask.com/book/3">HelloFlask</a></small>
+    </footer>
+</body>
+</html>

@@ -6,20 +6,24 @@
     <link rel = "stylesheet" , href = "{{url_for('static' , filename = 'style.css')}}" , type = "text/css"}">
 </head>
 <body>
-    <h2>
-    {{ user.name }}'s Blog
-    <img alt = "Avatar" class = "avatar" src = "{{url_for('static' , filename = 'images/avatar.png')}}"
-    </h2>
     {# 使用 length 过滤器获取 movies 变量的长度 #}
+    {% extends 'base.html' %}
+
+    {% block content %}
     <p>{{ projects|length }} Titles</p>
     <ul class = "project-list">
-        {% for project in projects %}  {# 迭代 movies 变量 #}
-        <li>{{ project.title }}</li>  {# 等同于 movie['title'] #}
+              {% for project in projects %}  {# 迭代 movies 变量 #}
+        <li>{{ project.title }}  
+            <span class = "float-right">
+            <a class  = "Edit" target =  "_blank" title = "edit the essay">Edit</a>
+            </span>
+                </li>
         {% endfor %}  {# 使用 endfor 标签结束 for 语句 #}
     </ul>
     <img alt="Walking Totoro" class="totoro" src="{{ url_for('static', filename='images/totoro.gif') }}">
+            {% endblock%}
     <footer>
-        <small>&copy; 2023 <a href="http://helloflask.com/book/3">HelloFlask</a></small>
+        <small>Email:wx375645615@gmail.com</small>
     </footer>
 </body>
 </html>

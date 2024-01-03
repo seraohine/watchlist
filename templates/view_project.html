@@ -10,8 +10,8 @@
 
     {% block content %}
     <h2>{{ project.title }}</h2>
-    <p>{{ project.content }}</p>
-    <a href="{{ url_for('index') }}">Back to Projects</a>
+    <p>{{ project.content | safe }}</p>
+    <a href="{{ url_for('index') }}" class="back-to-projects">Back to Projects</a>
     {% endblock %}
 </body>
 </html>

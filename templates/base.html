@@ -8,7 +8,10 @@
     {% endblock %}
 </head>
 <body>
-     <h2>
+{% for message in get_flashed_messages() %}
+    <div class="alert fade-out">{{ message }}</div>
+{% endfor %}
+    <h2>
         <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
         {{ user.name }}'s Blog
     </h2>
@@ -19,7 +22,8 @@
     </nav>
     {% block content %}{% endblock %}
     <footer>
-        <small>Email:wx375645615@gmail.com</small>
+        <small>Email: wx375645615@gmail.com</small>
     </footer>
 </body>
 </html>
+

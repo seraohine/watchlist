@@ -11,19 +11,24 @@
 
     {% block content %}
     <p>{{ projects|length }} Titles</p>
+    {% if current_user.is_authenticated %}
     <form method="post">
         Title<input type =  "text" name = "title" autocomplete = "off" required>
         <input class="btn" type="submit" name="submit" value="Add">
     </form>
-
+    {% endif %}
         <ul class="project-list">
         {% for project in projects %}  {# 迭代 projects 变量 #}
             <li>{{ project.title }}  
                 <span class="float-right">
+                    {% if current_user.is_authenticated %}
                     <form class="inline-form" method="post" action="{{ url_for('delete', project_id=project.id) }}">
                     <input class="btn delete-btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
                     </form>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}
                     <a class="Edit" href="{{ url_for('edit_project', project_id=project.id) }}"  title="edit the essay">Edit</a>
+                    {% endif %}
                     <a class="View" href="{{ url_for('view_project', project_id=project.id) }}"  title="view the project">View</a>
                 </span>
             </li>

@@ -168,5 +168,10 @@ input[name=year] {
 .inline-form {
     display: inline;
 }
+.delete-btn
+{
+    background-color:red;
+    color:white;
+}
 
 

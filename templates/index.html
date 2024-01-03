@@ -21,7 +21,7 @@
             <li>{{ project.title }}  
                 <span class="float-right">
                     <form class="inline-form" method="post" action="{{ url_for('delete', project_id=project.id) }}">
-                    <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+                    <input class="btn delete-btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
                     </form>
                     <a class="Edit" href="{{ url_for('edit_project', project_id=project.id) }}"  title="edit the essay">Edit</a>
                     <a class="View" href="{{ url_for('view_project', project_id=project.id) }}"  title="view the project">View</a>

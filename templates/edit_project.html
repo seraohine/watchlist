@@ -8,18 +8,16 @@
     {% endblock %}
 </head>
 <body>
-     <h2>
-        <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
-        {{ user.name }}'s Blog
-    </h2>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-        </ul>
-    </nav>
-    {% block content %}{% endblock %}
+    <h2>Edit Project</h2>
+    <form method="POST">
+        <label for="content">Content:</label><br>
+        <textarea name="content" rows="10" cols="80">{{ project.content }}</textarea><br>
+        <button class="btn-save" type="submit">Save</button>
+        <button class="btn-cancel" type="button" onclick="window.location='{{ url_for('index') }}'">Cancel</button>
+    </form>
     <footer>
         <small>Email:wx375645615@gmail.com</small>
     </footer>
 </body>
 </html>
+

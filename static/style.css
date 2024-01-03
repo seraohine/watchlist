@@ -75,6 +75,15 @@ nav li a:hover {
     float: right;
 }
 
+.View {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    background: #F5C518;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
 .Edit {
     font-size: 12px;
     font-weight: bold;
@@ -84,3 +93,23 @@ nav li a:hover {
     border-radius: 5px;
     padding: 3px 5px;
 }
+
+textarea {
+    width: 100%;
+    height: 300px;
+}
+.btn-save {
+    /* 添加你的样式 */
+    background-color: green;
+    color: white;
+    /* 其他样式属性 */
+}
+
+.btn-cancel {
+    /* 添加你的样式 */
+    background-color: red;
+    color: white;
+    /* 其他样式属性 */
+}
+
+

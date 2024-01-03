@@ -6,10 +6,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
 </head>
 <body>
-    <h2>
-        <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
-        {{ user.name }}'s Blog
-    </h2>
         {% extends 'base.html' %}
         {% block content %}
     <ul class="project-list">

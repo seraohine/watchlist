@@ -2,28 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{ user.name }}'s ProgrammingLearning</title>
-    <link rel = "stylesheet" , href = "{{url_for('static' , filename = 'style.css')}}" , type = "text/css"}">
+    <title>{{ user.name }}'s Programming Learning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
 </head>
 <body>
-    {# 使用 length 过滤器获取 movies 变量的长度 #}
+    {# 使用 length 过滤器获取 projects 变量的长度 #}
     {% extends 'base.html' %}
 
     {% block content %}
     <p>{{ projects|length }} Titles</p>
-    <ul class = "project-list">
-              {% for project in projects %}  {# 迭代 movies 变量 #}
-        <li>{{ project.title }}  
-            <span class = "float-right">
-            <a class  = "Edit" target =  "_blank" title = "edit the essay">Edit</a>
-            </span>
-                </li>
+    <ul class="project-list">
+        {% for project in projects %}  {# 迭代 projects 变量 #}
+            <li>{{ project.title }}  
+                <span class="float-right">
+                    <a class="Edit" href="{{ url_for('edit_project', project_id=project.id) }}" target="_blank" title="edit the essay">Edit</a>
+                    <a class="View" href="{{ url_for('view_project', project_id=project.id) }}" target="_blank" title="view the project">View</a>
+                </span>
+            </li>
         {% endfor %}  {# 使用 endfor 标签结束 for 语句 #}
     </ul>
     <img alt="Walking Totoro" class="totoro" src="{{ url_for('static', filename='images/totoro.gif') }}">
-            {% endblock%}
+    {% endblock %}
     <footer>
-        <small>Email:wx375645615@gmail.com</small>
+        <small>Email: wx375645615@gmail.com</small>
     </footer>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for , flash
+from flask import Flask, render_template, request, redirect, url_for , flash , session
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
@@ -8,6 +8,8 @@ import markdown2
 import secrets
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
+from datetime import datetime , timedelta
+import re
 
 WIN = sys.platform.startswith('win')
 if WIN:
@@ -40,6 +42,14 @@ class User(db.Model,UserMixin):
 
     def validate_password(self,password):       #检查密码是否正确，返回bool值
         return check_password_hash(self.password_hash,password)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(20), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
 
 #用户登录逻辑
@@ -94,10 +104,12 @@ def settings():
     return render_template('settings.html')
 
 
+# 更新 Projects 模型类
 class Projects(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))
     content = db.Column(db.Text)
+    comments = db.relationship('Comment', backref='project', lazy='dynamic')
 
 
 @app.cli.command()
@@ -181,8 +193,54 @@ def view_project(project_id):
 @app.route('/movie/delete/<int:project_id>', methods=['POST'])  # 限定只接受 POST 请求
 @login_required
 def delete(project_id):
-    project = Projects.query.get_or_404(project_id)  # 获取电影记录
+    project = Projects.query.get_or_404(project_id)  
     db.session.delete(project)  # 删除对应的记录
     db.session.commit()  # 提交数据库会话
     flash('deleted.')
     return redirect(url_for('index'))  # 重定向回主页
+
+@app.route('/comments/<int:project_id>', methods=['GET', 'POST'])
+def comments(project_id):
+    project = Projects.query.get_or_404(project_id)
+
+    if request.method == 'POST':
+        # 获取用户的IP地址
+        user_ip = request.remote_addr
+
+        # 检查用户是否在短时间内发表过评论
+        last_comment_time = session.get('last_comment_time', None)
+        if last_comment_time and datetime.utcnow() - last_comment_time < timedelta(minutes=5):
+            flash('评论太频繁，请稍后再试。')
+            return redirect(url_for('comments', project_id=project.id))
+
+        # 处理评论逻辑
+        author = request.form.get('author')
+        content = request.form.get('content')
+
+        # 检查评论长度
+        if len(content) > 500:  # 假设限制评论长度为500个字符
+            flash('评论内容过长，请缩短评论。')
+            return redirect(url_for('comments', project_id=project.id))
+
+        # 过滤恶意内容
+        if contains_malicious_content(content):
+            flash('评论包含恶意内容，请修改评论。')
+            return redirect(url_for('comments', project_id=project.id))
+
+        if author and content:
+            new_comment = Comment(author=author, content=content, project=project)
+            db.session.add(new_comment)
+            db.session.commit()
+
+            # 更新最后评论时间
+            session['last_comment_time'] = datetime.utcnow()
+
+    return render_template('comments.html', project=project)
+
+def contains_malicious_content(content):
+    # 使用正则表达式或其他方法检查是否包含恶意内容
+    malicious_patterns = ['badword1', 'badword2', 'maliciouslink.com']
+    for pattern in malicious_patterns:
+        if re.search(pattern, content, re.IGNORECASE):
+            return True
+    return False

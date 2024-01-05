@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
     {% endblock %}
 </head>
+
 <body>
-{% for message in get_flashed_messages() %}
-    <div class="alert fade-out">{{ message }}</div>
-{% endfor %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert fade-out">{{ message }}</div>
+    {% endfor %}
     <h2>
         <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
         {{ user.name }}'s Blog
@@ -18,16 +19,24 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Home</a></li>
-
             {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('settings') }}">Settings</a></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
-            <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %} 
+            {% if project is defined %}
+                {% if 'comments' in request.path %}
+                    <li><a href="{{ url_for('comments', project_id=project.id) }}">Comments</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="{{ url_for('comments', project_id=1) }}">Comments</a></li>  <!-- 这里的 1 可以替换为任意默认项目的 ID -->
             {% endif %}
         </ul>
     </nav>
-    {% block content %}{% endblock %}
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
     <footer>
         <small>Email: wx375645615@gmail.com</small>
     </footer>

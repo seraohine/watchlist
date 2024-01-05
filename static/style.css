@@ -19,12 +19,13 @@ footer {
     width: 40px;
 }
 
-/* 电影列表 */
 .project-list{
     list-style-type: none;
     padding: 0;
     margin-bottom: 10px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    max-height: 300px; /* 设置最大高度，超过部分将出现滚动条 */
+    overflow-y: auto; /* 显示纵向滚动条 */
 }
 
 .project-list li {
@@ -174,4 +175,59 @@ input[name=year] {
     color:white;
 }
 
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    max-height : 300px;
+    overflow-y:auto;
+    font-family: 'Arial', sans-serif;
+}
 
+.comment-item {
+    padding: 12px 24px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* 评论表单 */
+.comment-form {
+    margin-top: 20px;
+}
+/* 输入框样式 */
+.comment-form input[type="text"],
+.comment-form textarea {
+    width: 100%;
+    padding: 2px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.comment-form textarea {
+    resize: vertical; /* 允许垂直调整文本框大小 */
+}
+
+.comment-form input[type="submit"] {
+    background-color: #4caf50; /* 绿色 */
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.comment-form input[type="submit"]:hover {
+    background-color: #45a049; /* 鼠标悬停时的颜色 */
+}

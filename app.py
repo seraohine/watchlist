@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for , flash , session
+from flask import Flask, render_template, request, redirect, url_for , flash , session , render_template_string
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
@@ -8,7 +8,7 @@ import markdown2
 import secrets
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
-from datetime import datetime , timedelta
+from datetime import datetime , timedelta , timezone
 import re
 
 WIN = sys.platform.startswith('win')
@@ -50,6 +50,13 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    admin_replies = db.relationship('AdminReply', backref='comment', lazy='dynamic')
+
+class AdminReply(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
 
 
 #用户登录逻辑
@@ -208,10 +215,10 @@ def comments(project_id):
         user_ip = request.remote_addr
 
         # 检查用户是否在短时间内发表过评论
-        last_comment_time = session.get('last_comment_time', None)
-        if last_comment_time and datetime.utcnow() - last_comment_time < timedelta(minutes=5):
-            flash('评论太频繁，请稍后再试。')
-            return redirect(url_for('comments', project_id=project.id))
+        #last_comment_time = session.get('last_comment_time', None)
+        #if last_comment_time and datetime.utcnow() - last_comment_time.replace(tzinfo=None) < timedelta(minutes=5):
+        #flash('评论太频繁，请稍后再试。')
+        #return redirect(url_for('comments', project_id=project.id))
 
         # 处理评论逻辑
         author = request.form.get('author')
@@ -244,3 +251,21 @@ def contains_malicious_content(content):
         if re.search(pattern, content, re.IGNORECASE):
             return True
     return False
+
+@app.route('/admin_reply/<int:comment_id>', methods=['POST'])
+@login_required
+def admin_reply(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+
+    if request.method == 'POST':
+        admin_reply_content = request.form['admin_reply']
+
+        # 创建管理员回复
+        admin_reply = AdminReply(content=admin_reply_content, comment=comment)
+        db.session.add(admin_reply)
+        db.session.commit()
+
+        flash('Admin reply added.')
+
+    return redirect(url_for('comments', project_id=comment.project.id))
+

@@ -1,0 +1,19 @@
+<!-- comment_block.html -->
+<li class="comment-item">
+    <strong>{{ comment.author }}</strong> - {{ comment.content }}
+    <span class="timestamp">{{ comment.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+    {% for reply in comment.admin_replies %}
+        <div class="admin-reply">
+            Admin: {{ reply.content }}
+            <span class="timestamp">{{ reply.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+        </div>
+    {% endfor %}
+    <form method="post" action="{{ url_for('admin_reply', comment_id=comment.id) }}" class="admin-reply-form">
+        <label for="admin_reply">Admin Reply</label>
+        <br>
+        <textarea name="admin_reply" required></textarea>
+        <br>
+        <input type="submit" value="Reply">
+    </form>
+</li>
+

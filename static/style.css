@@ -77,7 +77,7 @@ nav li a:hover {
 }
 
 .View {
-    overflow-y : scroll;
+    overflow-y : auto !important;
     font-size: 12px;
     font-weight: bold;
     color: black;
@@ -88,7 +88,7 @@ nav li a:hover {
     resize : both;
 }
 .Edit {
-    overflow-y : scroll;
+    overflow-y : scroll !important;
     font-size: 12px;
     font-weight: bold;
     color: black;
@@ -244,6 +244,6 @@ input[name=year] {
 textarea {
     height: 15px; /* 设置一个最小高度，可以根据需要调整 */
     resize: both; /* 阻止用户手动调整 textarea 大小 */
-    overflow-y: hidden; /* 隐藏超出最小高度的内容，而不是出现滚动条 */
+    overflow-y: scroll; /* 隐藏超出最小高度的内容，而不是出现滚动条 */
 }
 

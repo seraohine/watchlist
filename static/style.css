@@ -77,7 +77,7 @@ nav li a:hover {
 }
 
 .View {
-    overflow-y : auto;
+    overflow-y : scroll;
     font-size: 12px;
     font-weight: bold;
     color: black;
@@ -85,6 +85,7 @@ nav li a:hover {
     background: #F5C518;
     border-radius: 5px;
     padding: 3px 5px;
+    resize : both;
 }
 .Edit {
     overflow-y : scroll;
@@ -95,12 +96,14 @@ nav li a:hover {
     background: #F5C518;
     border-radius: 5px;
     padding: 3px 5px;
+    resize : both;
 }
 
 textarea {
     overflow-y : scroll;
     width: 100%;
     height: 300px;
+    resize : both;
 }
 .btn-save {
     /* 添加你的样式 */
